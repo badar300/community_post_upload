@@ -1,11 +1,11 @@
 from app import db
 
 
-class AppModel():
+class AppModel:
     def save(self):
         db.session.add(self)
         db.session.commit()
 
 
-from models.signup import *
+from models.user import *
 

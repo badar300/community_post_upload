@@ -18,7 +18,7 @@ pymysql.install_as_MySQLdb()
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'abc'
-app.config['MAIL_PASSWORD'] = ''
+app.config['MAIL_PASSWORD'] = 'xyz'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_DEBUG'] = True
@@ -35,3 +35,4 @@ with app.app_context():
 
 
 from api.signup import *
+from api.login import *
