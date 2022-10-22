@@ -17,6 +17,19 @@ def add_community():
     return make_response(jsonify({'msg': 'Community has been added'}), 200)
 
 
+@app.route('/all_communities', methods=['GET'])
+def get_all_communities():
+    communities = Community.get_all_communities()
+    communities_list = []
+    for community in communities:
+        communities_list.append({
+            'community_id': community.community_id,
+            'community_name': community.community_name,
+            'description': community.description
+        })
+    return make_response(jsonify(communities_list), 200)
+
+
 @app.route('/all_communities/<int:user_id>', methods=['GET'])
 def get_user_communities(user_id):
     communities = Community.get_community_by_user_id(user_id)

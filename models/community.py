@@ -10,8 +10,8 @@ class Community(db.Model, AppModel):
     description = db.Column(db.String(256))
 
     @staticmethod
-    def get_all_communities(self):
-        return Community.query.filter.all()
+    def get_all_communities():
+        return Community.query.all()
 
     @staticmethod
     def get_community_by_user_id(user_id):
