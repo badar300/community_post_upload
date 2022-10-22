@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
+from environs import Env
 import pymysql
 
 app = Flask(__name__)
@@ -25,6 +26,8 @@ app.config['MAIL_DEBUG'] = True
 app.config['MAIL_SUPPRESS_SEND'] = False
 
 mail = Mail(app)
+env = Env()
+env.read_env()
 
 
 db = SQLAlchemy(app)
@@ -36,3 +39,5 @@ with app.app_context():
 
 from api.signup import *
 from api.login import *
+from api.community import *
+from api.create_post import *

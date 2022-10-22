@@ -2,12 +2,14 @@ from flask import request, make_response, jsonify
 from flask_mail import Message
 import random
 
-from app import app, mail
+from app import app, mail, env
 from models import User
 
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    # import pdb
+    # pdb.set_trace()
     signup_user = request.get_json()
     name = signup_user.get('username')
     email = signup_user.get('email')
@@ -15,11 +17,10 @@ def signup():
 
     if User.query.filter_by(email=email).all():
         return make_response(jsonify({'error': 'User already exist'}), 400)
-
     user = User(username=name, email=email, password=password)
-    status = email_authentication_code(email, user)
-    if status == 'Sent':
-        return make_response(jsonify({'msg': 'Code has been send'}), 400)
+    user.save()
+    email_authentication_code(email, user)
+    return make_response(jsonify({'msg': 'signed up success'}), 200)
 
 
 @app.route('/verify_code', methods=['GET', 'POST'])
