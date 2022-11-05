@@ -2,7 +2,7 @@ from flask import request, make_response, jsonify
 from flask_mail import Message
 import random
 
-from app import app, mail, env
+from app import app, mail
 from models import User
 
 

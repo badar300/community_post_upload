@@ -9,5 +9,6 @@ class AppModel:
 
 from models.user import *
 from models.community import *
+from models.community_subscribe import *
 from models.create_post import *
 

@@ -19,4 +19,4 @@ def login():
                 'username': user.username,
                 'is_authenticated': user.is_authenticated
             }), 200)
-    return make_response(jsonify({'error': 'Invalid credentials'}), 200)
+    return make_response(jsonify({'error': 'Invalid credentials'}), 400)

@@ -1,5 +1,6 @@
-from app import db
-from models import AppModel
+from app import db, con
+from models import AppModel, User, CommunitySubscribe
+from sqlalchemy.orm import relationship
 
 
 class CreatePost(db.Model, AppModel):
@@ -13,3 +14,5 @@ class CreatePost(db.Model, AppModel):
     @staticmethod
     def get_posts_by_user_id(user_id):
         return CreatePost.query.filter_by(user_id=user_id).all()
+
+

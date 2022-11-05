@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
 from flask_mail import Mail
 from environs import Env
 import pymysql
@@ -29,8 +30,9 @@ mail = Mail(app)
 env = Env()
 env.read_env()
 
-
 db = SQLAlchemy(app)
+engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], pool_size=5, pool_recycle=3600)
+con = engine.connect()
 from models import *
 
 with app.app_context():

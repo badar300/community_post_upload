@@ -16,3 +16,8 @@ class TestSignUp(PostUpload):
         with app.test_client() as c:
             response = c.post("/signup", content_type='application/json', data=json.dumps({'username': "test", "email": "test@test.com", "password": "12345"}))
             self.assertEqual(response.status_code, 200)
+            user = User.query.first()
+            # self.assertEqual(user.user_id, self.user.user_id)
+            # self.assertEqual(user.email, self.user.email)
+            self.assertEqual(user.email, "test@test.com")
+            self.assertEqual(user.username, "test")
