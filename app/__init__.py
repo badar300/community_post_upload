@@ -3,10 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from flask_mail import Mail
 from environs import Env
+from flask_cors import CORS
 import pymysql
 
 app = Flask(__name__)
-
+CORS(app)
 app.secret_key = 'abc123'
 app.config['ENV'] = 'development'
 app.config['DEBUG'] = True
