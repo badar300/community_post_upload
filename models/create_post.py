@@ -1,6 +1,7 @@
 from app import db, con
 from models import AppModel, User, CommunitySubscribe
 from sqlalchemy.orm import relationship
+import datetime
 
 
 class CreatePost(db.Model, AppModel):
@@ -10,6 +11,7 @@ class CreatePost(db.Model, AppModel):
     community_id = db.Column(db.Integer)
     post_name = db.Column(db.String(20))
     description = db.Column(db.String(256))
+    create_dttm = db.Column(db.DateTime, default=datetime.datetime.now())
 
     @staticmethod
     def get_posts_by_user_id(user_id):

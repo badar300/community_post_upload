@@ -30,7 +30,8 @@ def get_all_posts():
             'post_name': post.post_name,
             'description': post.description,
             'username': post.username,
-            'community_name': post.community_name
+            'community_name': post.community_name,
+            "posted_time": post.create_dttm
         })
     print(all_posts)
     return make_response(jsonify(all_posts), 200)
@@ -38,7 +39,7 @@ def get_all_posts():
 
 def all_subscribed_community_posts(user_id):
     return con.execute('''
-    select cp.post_id, cp.post_name, cp.description, u.username, c.community_name from create_post cp join user u
+    select cp.post_id, cp.post_name, cp.description, u.username, c.community_name, cp.create_dttm from create_post cp join user u
     on u.user_id = cp.user_id
     join community_subscribe cs
     on cs.community_id = cp.community_id
