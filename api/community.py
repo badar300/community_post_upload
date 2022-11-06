@@ -13,8 +13,8 @@ def add_community():
     description = community.get('description')
 
     community = Community(user_id=user_id, community_name=community_name, description=description)
-    cs = CommunitySubscribe(user_id=user_id, comunity_id=community.comunity_id)
     community.save()
+    cs = CommunitySubscribe(user_id=user_id, community_id=community.community_id)
     cs.save()
 
     return make_response(jsonify({'msg': 'Community has been added'}), 200)

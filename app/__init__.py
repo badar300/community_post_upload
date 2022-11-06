@@ -20,8 +20,8 @@ pymysql.install_as_MySQLdb()
 # Email configuration
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'abc'
-app.config['MAIL_PASSWORD'] = 'xyz'
+app.config['MAIL_USERNAME'] = 'badarbaig21@gmail.com'
+app.config['MAIL_PASSWORD'] = 'xqxdxrosshbppkez'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_DEBUG'] = True
