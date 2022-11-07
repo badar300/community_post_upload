@@ -11,7 +11,7 @@ class Community(db.Model, AppModel):
 
     @staticmethod
     def get_all_communities():
-        return Community.query.all()
+        return Community.query.filter()
 
     @staticmethod
     def get_community_by_user_id(user_id):
