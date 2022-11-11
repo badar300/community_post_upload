@@ -25,13 +25,14 @@ def get_all_posts():
     posts = all_subscribed_community_posts(user_id)
     all_posts = []
     for post in posts:
+        likes = LikePost.query.filter(LikePost.post_id == post.post_id).count()
         all_posts.append({
             'post_id': post.post_id,
             'post_name': post.post_name,
             'description': post.description,
             'username': post.username,
             'community_name': post.community_name,
-            "total_likes": post.total_likes,
+            "total_likes": likes,
             "posted_time": post.create_dttm
         })
     print(all_posts)
@@ -40,14 +41,12 @@ def get_all_posts():
 
 def all_subscribed_community_posts(user_id):
     return con.execute('''
-    select cp.post_id, cp.post_name, cp.description, u.username, c.community_name,count(lp.post_id) as total_likes, cp.create_dttm from create_post cp join user u
+    select cp.post_id, cp.post_name, cp.description, u.username, c.community_name, cp.create_dttm from create_post cp join user u
     on u.user_id = cp.user_id
     join community_subscribe cs
     on cs.community_id = cp.community_id
     join communities c on c.community_id = cp.community_id
-    join like_post lp on lp.post_id = cp.post_id
     where cs.user_id = %s
-    group by lp.post_id
     ''', (user_id,))
 
 
