@@ -1,4 +1,4 @@
-from app import db, con
+from app import db
 from models import AppModel, User, CommunitySubscribe
 from sqlalchemy.orm import relationship
 import datetime

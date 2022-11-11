@@ -5,6 +5,7 @@ from flask_mail import Mail
 from environs import Env
 from flask_cors import CORS
 import pymysql
+import mysql.connector
 
 app = Flask(__name__)
 CORS(app)
@@ -32,12 +33,20 @@ env = Env()
 env.read_env()
 
 db = SQLAlchemy(app)
-engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], pool_size=5, pool_recycle=3600)
-con = engine.connect()
+# engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], pool_size=5, pool_recycle=3600)
+# con = engine.connect()
 from models import *
 
 with app.app_context():
     db.create_all()
+
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="root",
+  password="badar",
+  database="user_post"
+)
+mycursor = mydb.cursor()
 
 
 from api.signup import *

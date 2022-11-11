@@ -1,7 +1,7 @@
 from flask import make_response, jsonify, request
 from sqlalchemy import text
 
-from app import app, con
+from app import app, mycursor
 from models import CreatePost, LikePost, SavePost
 
 
@@ -25,22 +25,22 @@ def get_all_posts():
     posts = all_subscribed_community_posts(user_id)
     all_posts = []
     for post in posts:
-        likes = LikePost.query.filter(LikePost.post_id == post.post_id).count()
+        likes = LikePost.query.filter(LikePost.post_id == post[0]).count()
         all_posts.append({
-            'post_id': post.post_id,
-            'post_name': post.post_name,
-            'description': post.description,
-            'username': post.username,
-            'community_name': post.community_name,
+            'post_id': post[0],
+            'post_name': post[1],
+            'description': post[2],
+            'username': post[3],
+            'community_name': post[4],
             "total_likes": likes,
-            "posted_time": post.create_dttm
+            "posted_time": post[5]
         })
     print(all_posts)
     return make_response(jsonify(all_posts), 200)
 
 
 def all_subscribed_community_posts(user_id):
-    return con.execute('''
+    mycursor.execute('''
     select cp.post_id, cp.post_name, cp.description, u.username, c.community_name, cp.create_dttm from create_post cp join user u
     on u.user_id = cp.user_id
     join community_subscribe cs
@@ -48,6 +48,7 @@ def all_subscribed_community_posts(user_id):
     join communities c on c.community_id = cp.community_id
     where cs.user_id = %s
     ''', (user_id,))
+    return mycursor.fetchall()
 
 
 @app.route('/like_post', methods=['POST'])

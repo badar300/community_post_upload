@@ -1,6 +1,6 @@
 
 from flask import request, make_response, jsonify
-from app import app, con
+from app import app, mycursor
 from models import Comment
 
 
@@ -19,17 +19,18 @@ def new_comment():
 def get_all_comments():
     post = request.get_json()
     post_id = post.get('post_id')
-    comments = con.execute('''
+    mycursor.execute('''
         select u.username, c.comment, c.create_dttm from comments c join user u
         on u.user_id = c.user_id
         where c.post_id = %s
         ''', (post_id,))
+    comments = mycursor.fetchall()
     all_comments = []
     for comment in comments:
         all_comments.append({
-            'username': comment.username,
-            'comment': comment.comment,
-            'comment_time': comment.create_dttm
+            'username': comment[0],
+            'comment': comment[1],
+            'comment_time': comment[2]
         })
     return make_response(jsonify(all_comments), 200)
 
