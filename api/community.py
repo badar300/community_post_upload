@@ -1,4 +1,4 @@
-from flask import make_response, jsonify, request
+from flask import make_response, jsonify, request, redirect
 from sqlalchemy import text, engine
 
 from app import app
@@ -59,7 +59,7 @@ def subscribe_community():
     return make_response(jsonify({'msg': 'Community Added'}), 200)
 
 
-@app.route('/subscribed-community', methods=['get'])
+@app.route('/subscribed-community', methods=['POST'])
 def all_subscribed_communities():
     user = request.get_json()
     user_id = user.get('user_id')

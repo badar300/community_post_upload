@@ -21,7 +21,7 @@ pymysql.install_as_MySQLdb()
 # Email configuration
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'abc'
+app.config['MAIL_USERNAME'] = ''
 app.config['MAIL_PASSWORD'] = ''
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
@@ -33,18 +33,17 @@ env = Env()
 env.read_env()
 
 db = SQLAlchemy(app)
-# engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], pool_size=5, pool_recycle=3600)
-# con = engine.connect()
+
 from models import *
 
 with app.app_context():
     db.create_all()
 
 mydb = mysql.connector.connect(
-  host="localhost",
-  user="root",
-  password="badar",
-  database="user_post"
+  host=env.str('HOST'),
+  user=env.str('USER'),
+  password=env.str('PASSWORD'),
+  database=env.str('DATABASE')
 )
 mycursor = mydb.cursor()
 

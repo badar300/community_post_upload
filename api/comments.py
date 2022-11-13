@@ -1,6 +1,6 @@
 
 from flask import request, make_response, jsonify
-from app import app, mycursor
+from app import app, mycursor, mydb
 from models import Comment
 
 
@@ -25,6 +25,7 @@ def get_all_comments():
         where c.post_id = %s
         ''', (post_id,))
     comments = mycursor.fetchall()
+    mydb.commit()
     all_comments = []
     for comment in comments:
         all_comments.append({
