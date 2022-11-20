@@ -2,7 +2,7 @@ from flask import make_response, jsonify, request
 from sqlalchemy import text
 
 from app import app, mycursor, mydb
-from models import CreatePost, LikePost, SavePost
+from models import CreatePost, LikePost, SavePost, CommunitySubscribe
 
 
 @app.route('/create_post', methods=['POST'])
@@ -26,28 +26,30 @@ def get_all_posts():
     all_posts = []
     for post in posts:
         likes = LikePost.query.filter(LikePost.post_id == post[0]).count()
-        all_posts.append({
-            'post_id': post[0],
-            'post_name': post[1],
-            'description': post[2],
-            'username': post[3],
-            'community_name': post[4],
-            "total_likes": likes,
-            "posted_time": post[5]
-        })
+        is_subscribed = CommunitySubscribe.query.filter_by(community_id=post[6], user_id=user_id).first()
+        if is_subscribed:
+            all_posts.append({
+                'post_id': post[0],
+                'post_name': post[1],
+                'description': post[2],
+                'username': post[3],
+                'community_name': post[4],
+                "total_likes": likes,
+                "posted_time": post[5]
+            })
     print(all_posts)
     return make_response(jsonify(all_posts), 200)
 
 
 def all_subscribed_community_posts(user_id):
     mycursor.execute('''
-    select cp.post_id, cp.post_name, cp.description, u.username, c.community_name, cp.create_dttm from create_post cp
+    select cp.post_id, cp.post_name, cp.description, u.username, c.community_name, cp.create_dttm, c.community_id from create_post cp
     join user u on u.user_id = cp.user_id
-    join community_subscribe cs
-    on cs.community_id = cp.community_id and cs.user_id = cp.user_id
     join communities c on c.community_id = cp.community_id
-    where cp.user_id = %s
-    ''', (user_id,))
+    order by cp.create_dttm desc
+    -- where cp.user_id = %s
+    ''')
+    # ''', (user_id,))
     data = mycursor.fetchall()
     mydb.commit()
     return data

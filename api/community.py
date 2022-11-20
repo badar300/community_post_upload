@@ -35,7 +35,7 @@ def get_all_communities():
 
 @app.route('/all_communities/<int:user_id>', methods=['GET'])
 def get_user_communities(user_id):
-    communities = Community.get_community_by_user_id(user_id)
+    communities = CommunitySubscribe.get_all_subscribed_communities(user_id)
     communities_list = []
     for community in communities:
         communities_list.append({
