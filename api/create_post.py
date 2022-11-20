@@ -67,6 +67,20 @@ def like_post():
     return make_response(jsonify({'msg': 'You liked this post', 'total_likes': lk}), 200)
 
 
+@app.route('/dislike', methods=['POST'])
+def dislike():
+    comm_subs = request.get_json()
+    post_id = comm_subs.get('post_id')
+    user_id = comm_subs.get('user_id')
+    LikePost.query.filter_by(post_id=post_id, user_id=user_id).delete()
+    # if lk:
+    #     return make_response(jsonify({'msg': 'Post already liked'}), 400)
+    # cs = LikePost(post_id=post_id, user_id=user_id)
+    # cs.save()
+    lk = LikePost.query.filter_by(post_id=post_id).count()
+    return make_response(jsonify({'msg': 'You dislike this post', 'total_likes': lk}), 200)
+
+
 @app.route('/save_post', methods=['POST'])
 def save_post():
     save = request.get_json()
