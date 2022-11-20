@@ -1,7 +1,7 @@
 from flask import make_response, jsonify, request
 from sqlalchemy import text
 
-from app import app, mycursor, mydb
+from app import app, mycursor, mydb, db
 from models import CreatePost, LikePost, SavePost, CommunitySubscribe
 
 
@@ -74,7 +74,8 @@ def dislike():
     comm_subs = request.get_json()
     post_id = comm_subs.get('post_id')
     user_id = comm_subs.get('user_id')
-    LikePost.query.filter_by(post_id=post_id, user_id=user_id).delete()
+    lk = LikePost.query.filter_by(post_id=post_id, user_id=user_id).delete()
+    db.session.commit()
     # if lk:
     #     return make_response(jsonify({'msg': 'Post already liked'}), 400)
     # cs = LikePost(post_id=post_id, user_id=user_id)

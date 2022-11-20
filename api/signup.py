@@ -1,5 +1,6 @@
 from flask import request, make_response, jsonify
 from flask_mail import Message
+from passlib.hash import pbkdf2_sha256
 import random
 
 from app import app, mail
@@ -8,12 +9,11 @@ from models import User
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    # import pdb
-    # pdb.set_trace()
     signup_user = request.get_json()
     name = signup_user.get('username')
     email = signup_user.get('email')
     password = signup_user.get('password')
+    password = pbkdf2_sha256.hash(password)
 
     if User.query.filter_by(email=email).all():
         return make_response(jsonify({'error': 'User already exist'}), 400)
